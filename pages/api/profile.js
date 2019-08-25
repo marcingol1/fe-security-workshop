@@ -17,7 +17,6 @@ export default async (req, res) => {
       const js = await response.json();
       // Need camelcase in the frontend
       const data = Object.assign({}, { avatarUrl: js.avatar_url }, js);
-      console.log(data);
       return res.status(200).json({ data });
     } else {
       // https://github.com/developit/unfetch#caveats

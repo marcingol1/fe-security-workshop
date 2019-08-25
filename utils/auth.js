@@ -5,14 +5,14 @@ import cookie from 'js-cookie';
 
 function login({ token }) {
   cookie.set('token', token, { expires: 1 });
-  Router.push('/profile');
+  Router.push('/cookie/profile');
 }
 
 function logout() {
   cookie.remove('token');
   // to support logging out from all windows
   window.localStorage.setItem('logout', Date.now());
-  Router.push('/login');
+  Router.push('/cookie/login');
 }
 
 // Gets the display name of a JSX component for dev tools
@@ -51,7 +51,7 @@ function withAuthSync(WrappedComponent) {
     syncLogout(event) {
       if (event.key === 'logout') {
         console.log('logged out from storage!');
-        Router.push('/login');
+        Router.push('/cookie/login');
       }
     }
 
@@ -69,13 +69,13 @@ function auth(ctx) {
    * Additionally if there's no token it means the user is not logged in.
    */
   if (ctx.req && !token) {
-    ctx.res.writeHead(302, { Location: '/login' });
+    ctx.res.writeHead(302, { Location: '/cookie/login' });
     ctx.res.end();
   }
 
   // We already checked for server. This should only happen on client.
   if (!token) {
-    Router.push('/login');
+    Router.push('/cookie/login');
   }
 
   return token;
