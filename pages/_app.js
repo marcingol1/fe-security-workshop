@@ -20,17 +20,27 @@ const theme = createMuiTheme({
 export default class MyApp extends App {
   renderHead() {
     return (
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
-      </Head>
+      <div>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          />
+        </Head>
+        <style jsx global>{`
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#fffbfb, #eaeafd);
+          }
+        `}</style>
+      </div>
     );
   }
 

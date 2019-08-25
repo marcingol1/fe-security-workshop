@@ -17,6 +17,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,11 +67,12 @@ const FullScreenWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const StyledPaper = styled(Paper)`
-  height: 50vh;
-  width: 50%;
+  height: 35vh;
+  min-width: 50vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,9 +85,18 @@ const FormWrapper = styled.div`
   grid-gap: 1em;
 `;
 
+const Logo = styled.img`
+  width: ${props => (props.small ? '70px' : '5em')};
+  height: ${props => (props.small ? '70px' : '150px')};
+  padding: ${props => (props.small ? '0 1em' : '2em')};
+  object-fit: contain;
+  -webkit-filter: hue-rotate(210deg);
+  filter: hue-rotate(210deg);
+`;
+
 function SignInScreen({ children }) {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
+  const [login, setLogin] = useState('test@test.com');
+  const [password, setPassword] = useState('password');
   const [user, initialising, error] = useAuthState(firebase.auth());
   const classes = useStyles();
 
@@ -117,21 +128,22 @@ function SignInScreen({ children }) {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar color="secondary" position="static">
+        <AppBar color="default" position="static">
           <Toolbar>
             <IconButton
               edge="start"
               className={classes.menuButton}
-              color="inherit"
+              color="secondary"
               aria-label="menu"
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Logo small src="/static/cat-logo.png" />
+            <Typography color="primary" variant="h6" className={classes.title}>
               Catsagram
             </Typography>
-            <Button onClick={logout} color="inherit">
-              Logout
+            <Button onClick={logout} color="secondary">
+              <ExitToAppIcon />
             </Button>
           </Toolbar>
         </AppBar>
@@ -141,6 +153,7 @@ function SignInScreen({ children }) {
   }
   return (
     <FullScreenWrapper>
+      <Logo src="/static/cat-logo.png" />
       <StyledPaper>
         <div>
           <Typography color="primary" variant="h2">
