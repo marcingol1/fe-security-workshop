@@ -8,6 +8,7 @@ import {
   Grid,
   TextField
 } from '@material-ui/core';
+import { Wrapper } from '../components/layout.styled';
 
 // Configure Firebase.
 const config = {
@@ -23,15 +24,6 @@ let db;
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
-
-const Wrapper = styled.main`
-  display: flex;
-  min-height: calc(100vh - 64px);
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-`;
 
 function Profile() {
   const [auth, setAuth] = useState(firebase.auth());

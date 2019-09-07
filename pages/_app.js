@@ -1,8 +1,12 @@
-import App from 'next/app';
+import App, { Container } from 'next/app';
 import Head from 'next/head';
 import React, { Fragment } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  CssBaseline
+} from '@material-ui/core';
 import { purple } from '@material-ui/core/colors';
 import SignInScreen from '../components/sign-in';
 
@@ -20,27 +24,17 @@ const theme = createMuiTheme({
 export default class MyApp extends App {
   renderHead() {
     return (
-      <div>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
-          />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-          />
-        </Head>
-        <style jsx global>{`
-          * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(#fffbfb, #eaeafd);
-          }
-        `}</style>
-      </div>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+      </Head>
     );
   }
 
@@ -48,6 +42,8 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
+        {this.renderHead()}
+        <CssBaseline />
         <ThemeProvider theme={theme}>
           <Fragment>
             <SignInScreen>

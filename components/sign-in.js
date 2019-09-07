@@ -94,6 +94,13 @@ const Logo = styled.img`
   filter: hue-rotate(210deg);
 `;
 
+const LogoWrapper = styled.a`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+`;
+
 function SignInScreen({ children }) {
   const [login, setLogin] = useState('test@test.com');
   const [password, setPassword] = useState('password');
@@ -128,7 +135,7 @@ function SignInScreen({ children }) {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar color="default" position="static">
+        <AppBar color="default" position="sticky">
           <Toolbar>
             <IconButton
               edge="start"
@@ -138,7 +145,9 @@ function SignInScreen({ children }) {
             >
               <MenuIcon />
             </IconButton>
-            <Logo small src="/static/cat-logo.png" />
+            <LogoWrapper href="/">
+              <Logo small src="/static/cat-logo.png" />
+            </LogoWrapper>
             <Typography color="primary" variant="h6" className={classes.title}>
               Catsagram
             </Typography>
