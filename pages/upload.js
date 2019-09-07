@@ -15,21 +15,6 @@ import {
 } from '../components/layout.styled';
 import Upload from '../components/upload';
 
-// Configure Firebase.
-const config = {
-  apiKey: 'AIzaSyC2F773_xDR-cMnu8VLIlm4gT9xHIMbL1M',
-  authDomain: 'fe-security.firebaseapp.com',
-  databaseURL: 'https://fe-security.firebaseio.com',
-  projectId: 'fe-security',
-  storageBucket: 'fe-security.appspot.com',
-  messagingSenderId: '210195962261',
-  appId: '1:210195962261:web:6ed9a396eac35c9c'
-};
-let db;
-if (!firebase.apps.length) {
-  firebase.initializeApp(config);
-}
-
 function Index() {
   const [auth] = useState(firebase.auth());
   const [storage] = useState(firebase.storage());
