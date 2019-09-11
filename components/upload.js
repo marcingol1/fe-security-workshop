@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 const Image = styled.img`
   height: 600px;
   width: 100%;
+  object-fit: contain;
 `;
 
 const ImageWrapper = styled.div`

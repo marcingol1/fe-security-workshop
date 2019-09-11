@@ -10,7 +10,8 @@ import {
   Input,
   Paper,
   CircularProgress,
-  CssBaseline
+  CssBaseline,
+  Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -18,6 +19,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,7 +88,7 @@ const FormWrapper = styled.div`
 `;
 
 const Logo = styled.img`
-  width: ${props => (props.small ? '70px' : '5em')};
+  width: ${props => (props.small ? '70px' : '200px')};
   height: ${props => (props.small ? '70px' : '150px')};
   padding: ${props => (props.small ? '0 1em' : '2em')};
   object-fit: contain;
@@ -105,12 +107,23 @@ function SignInScreen({ children }) {
   const [login, setLogin] = useState('test@test.com');
   const [password, setPassword] = useState('password');
   const [user, initialising, error] = useAuthState(firebase.auth());
+  const [db] = useState(firebase.firestore());
   const classes = useStyles();
 
   const loginAction = event => {
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(login, password);
   };
+
+  const registerAction = event => {
+    event.preventDefault();
+    firebase.auth().createUserWithEmailAndPassword(login, password);
+    db.collection('users').add({
+      username: login,
+      photos: []
+    });
+  };
+
   const logout = () => {
     firebase.auth().signOut();
   };
@@ -137,23 +150,30 @@ function SignInScreen({ children }) {
         <CssBaseline />
         <AppBar color="default" position="sticky">
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="secondary"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
             <LogoWrapper href="/">
               <Logo small src="/static/cat-logo.png" />
             </LogoWrapper>
             <Typography color="primary" variant="h6" className={classes.title}>
               Catsagram
             </Typography>
-            <Button onClick={logout} color="secondary">
-              <ExitToAppIcon />
-            </Button>
+            <Grid container justify="flex-end" alignItems="center">
+              <a href="/upload">
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="secondary"
+                  aria-label="upload"
+                >
+                  <CloudUploadIcon />
+                </IconButton>
+              </a>
+              <Typography variant="subtitle1" color="secondary">
+                {user.email}
+              </Typography>
+              <Button onClick={logout} color="secondary">
+                <ExitToAppIcon />
+              </Button>
+            </Grid>
           </Toolbar>
         </AppBar>
         {children}
@@ -162,7 +182,7 @@ function SignInScreen({ children }) {
   }
   return (
     <FullScreenWrapper>
-      <Logo src="/static/cat-logo.png" />
+      <Logo small={false} src="/static/cat-logo.png" />
       <StyledPaper>
         <div>
           <Typography color="primary" variant="h2">
@@ -198,6 +218,14 @@ function SignInScreen({ children }) {
               type="submit"
             >
               Log in
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={registerAction}
+              type="submit"
+            >
+              Register
             </Button>
           </FormWrapper>
         </form>

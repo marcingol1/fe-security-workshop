@@ -57,9 +57,7 @@ function Login() {
             name="username"
             value={userData.username}
             onChange={event =>
-              setUserData(
-                Object.assign({}, userData, { username: event.target.value })
-              )
+              setUserData({ ...userData, username: event.target.value })
             }
           />
 

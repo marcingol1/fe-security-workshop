@@ -18,23 +18,41 @@ import Upload from '../components/upload';
 function Index() {
   const [auth] = useState(firebase.auth());
   const [storage] = useState(firebase.storage());
+  const [db] = useState(firebase.firestore());
   const [progress, setProgress] = useState(0);
   const [file, setFile] = useState(null);
   const [fileRef, setFileRef] = useState(null);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState('test');
+  const [description, setDescription] = useState('test desc');
 
   function uploadFile() {
     if (!name) {
       return;
     }
+
+    // name could be possible way to store XSS in here?
     const ref = storage.ref(auth.currentUser.uid + '/photos/' + name);
     const task = ref.put(fileRef);
-    task.on('state_changed', snapshot => {
-      const percentage =
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setProgress(percentage);
-    });
+    task.on(
+      'state_changed',
+      snapshot => {
+        const percentage =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(percentage);
+      },
+      () => {},
+      async () => {
+        const url = await ref.getDownloadURL();
+        db.collection('photos').add({
+          date: new Date(),
+          user: auth.currentUser.email,
+          url,
+          file: fileRef.size < 30000 ? file : null,
+          fileName: name,
+          fileDescription: description
+        });
+      }
+    );
     setFileRef(null);
   }
 
@@ -47,15 +65,13 @@ function Index() {
           value={progress}
         />
       </ProgressWrapper>
-      <UploadPaper elevation="8">
+      <UploadPaper elevation={8}>
         <Typography align="center" variant="h3" color="secondary">
           Upload new photo
         </Typography>
         <TextField
           label="Name"
           style={{ margin: '4em 0 0 0' }}
-          placeholder="Name of the file"
-          helperText="Enter name of the file here!"
           fullWidth
           margin="normal"
           variant="outlined"
