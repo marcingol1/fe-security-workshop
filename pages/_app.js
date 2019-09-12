@@ -1,10 +1,20 @@
 import App from 'next/app';
 import Head from 'next/head';
-import React, { Fragment } from 'react';
+import React from 'react';
+import firebase from 'firebase';
 import { ThemeProvider } from 'styled-components';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import { purple } from '@material-ui/core/colors';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  CssBaseline
+} from '@material-ui/core';
 import SignInScreen from '../components/sign-in';
+import config from '../config';
+
+let db;
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -38,12 +48,14 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
+        {this.renderHead()}
+        <CssBaseline />
         <ThemeProvider theme={theme}>
-          <Fragment>
+          <>
             <SignInScreen>
               <Component {...pageProps} />
             </SignInScreen>
-          </Fragment>
+          </>
         </ThemeProvider>
       </MuiThemeProvider>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import styled from 'styled-components';
 import 'firebase/firestore';
+import config from '../config';
 
 const RegisterWrapper = styled.main`
   display: grid;
@@ -9,21 +10,10 @@ const RegisterWrapper = styled.main`
   width: 50%;
 `;
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyC2F773_xDR-cMnu8VLIlm4gT9xHIMbL1M',
-  authDomain: 'fe-security.firebaseapp.com',
-  databaseURL: 'https://fe-security.firebaseio.com',
-  projectId: 'fe-security',
-  storageBucket: 'fe-security.appspot.com',
-  messagingSenderId: '210195962261',
-  appId: '1:210195962261:web:6ed9a396eac35c9c'
-};
-
 let db;
-
 if (!firebase.apps.length) {
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(config);
   db = firebase.firestore();
 }
 
@@ -38,18 +28,6 @@ function Register() {
       }
       return;
     }
-    /* db.collection('users')
-      .add({
-        first: 'Ada',
-        last: 'Lovelace',
-        born: 1815
-      })
-      .then(function(docRef) {
-        console.log('Document written with ID: ', docRef.id);
-      })
-      .catch(function(error) {
-        console.error('Error adding document: ', error);
-      }); */
   });
 
   useEffect(() => {
@@ -57,13 +35,6 @@ function Register() {
       console.warn('databse not started');
       return;
     }
-    db.collection('users')
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc);
-        });
-      });
   });
 
   return (

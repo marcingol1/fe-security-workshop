@@ -1,42 +1,24 @@
-# Hello World example
+## Security front-end template with examples of both good and bad practices of:
 
-## How to use
+- Hosting
+- Authentication
+- Storage
 
-### Using `create-next-app`
+## Deploying application in GCP (Cloud Run)
 
-Execute [`create-next-app`](https://github.com/segmentio/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
+    1. Init your gcloud etc - in docs of Google
+    2. Enable Cloud Run API (as it is still in beta)
+    3. Deploy your container as:
 
-```bash
-npx create-next-app --example hello-world hello-world-app
-# or
-yarn create next-app --example hello-world hello-world-app
+### pushes container into registry
+
+```
+gcloud builds submit --tag gcr.io/fe-security/fe-security
 ```
 
-### Download manually
+### deploys pushed container
 
-Download the example:
-
-```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/hello-world
-cd hello-world
 ```
+gcloud beta run deploy --image gcr.io/fe-security/fe-security --platform managed
 
-Install it and run:
-
-```bash
-npm install
-npm run dev
-# or
-yarn
-yarn dev
 ```
-
-Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.co/download))
-
-```bash
-now
-```
-
-## The idea behind the example
-
-This example shows the most basic idea behind Next. We have 2 pages: `pages/index.js` and `pages/about.js`. The former responds to `/` requests and the latter to `/about`. Using `next/link` you can add hyperlinks between them with universal routing capabilities. The `day` directory shows that you can have subdirectories.

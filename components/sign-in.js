@@ -10,13 +10,17 @@ import {
   Input,
   Paper,
   CircularProgress,
-  CssBaseline
+  CssBaseline,
+  Grid
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { useRouter } from 'next/router';
+import config from '../config';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,16 +34,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-// Configure Firebase.
-const config = {
-  apiKey: 'AIzaSyC2F773_xDR-cMnu8VLIlm4gT9xHIMbL1M',
-  authDomain: 'fe-security.firebaseapp.com',
-  databaseURL: 'https://fe-security.firebaseio.com',
-  projectId: 'fe-security',
-  storageBucket: 'fe-security.appspot.com',
-  messagingSenderId: '210195962261',
-  appId: '1:210195962261:web:6ed9a396eac35c9c'
-};
 let db;
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
@@ -66,11 +60,12 @@ const FullScreenWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const StyledPaper = styled(Paper)`
-  height: 50vh;
-  width: 50%;
+  height: 350px;
+  min-width: 50vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,19 +78,46 @@ const FormWrapper = styled.div`
   grid-gap: 1em;
 `;
 
+const Logo = styled.img`
+  width: ${props => (props.small ? '70px' : '200px')};
+  height: ${props => (props.small ? '70px' : '150px')};
+  padding: ${props => (props.small ? '0 1em' : '2em')};
+  object-fit: contain;
+  -webkit-filter: hue-rotate(210deg);
+  filter: hue-rotate(210deg);
+`;
+
+const LogoWrapper = styled.a`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+`;
+
 function SignInScreen({ children }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [user, initialising, error] = useAuthState(firebase.auth());
+  const router = useRouter();
   const classes = useStyles();
 
   const loginAction = event => {
     event.preventDefault();
     firebase.auth().signInWithEmailAndPassword(login, password);
   };
+
+  const registerAction = event => {
+    event.preventDefault();
+    firebase.auth().createUserWithEmailAndPassword(login, password);
+  };
+
   const logout = () => {
     firebase.auth().signOut();
   };
+
+  if (router.pathname.match('cookie')) {
+    return children;
+  }
 
   if (initialising) {
     return (
@@ -117,22 +139,32 @@ function SignInScreen({ children }) {
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar color="secondary" position="static">
+        <AppBar color="default" position="sticky">
           <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <LogoWrapper href="/">
+              <Logo small src="/static/cat-logo.png" />
+            </LogoWrapper>
+            <Typography color="primary" variant="h6" className={classes.title}>
               Catsagram
             </Typography>
-            <Button onClick={logout} color="inherit">
-              Logout
-            </Button>
+            <Grid container justify="flex-end" alignItems="center">
+              <a href="/upload">
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="secondary"
+                  aria-label="upload"
+                >
+                  <CloudUploadIcon />
+                </IconButton>
+              </a>
+              <Typography variant="subtitle1" color="secondary">
+                {user.email}
+              </Typography>
+              <Button onClick={logout} color="secondary">
+                <ExitToAppIcon />
+              </Button>
+            </Grid>
           </Toolbar>
         </AppBar>
         {children}
@@ -141,6 +173,7 @@ function SignInScreen({ children }) {
   }
   return (
     <FullScreenWrapper>
+      <Logo small={false} src="/static/cat-logo.png" />
       <StyledPaper>
         <div>
           <Typography color="primary" variant="h2">
@@ -176,6 +209,14 @@ function SignInScreen({ children }) {
               type="submit"
             >
               Log in
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={registerAction}
+              type="submit"
+            >
+              Register
             </Button>
           </FormWrapper>
         </form>
