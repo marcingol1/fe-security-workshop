@@ -1,9 +1,10 @@
 export default {
-  apiKey: 'AIzaSyC2F773_xDR-cMnu8VLIlm4gT9xHIMbL1M',
-  authDomain: 'fe-security.firebaseapp.com',
-  databaseURL: 'https://fe-security.firebaseio.com',
-  projectId: 'fe-security',
-  storageBucket: 'fe-security.appspot.com',
-  messagingSenderId: '210195962261',
-  appId: '1:210195962261:web:6ed9a396eac35c9c'
+  apiKey: 'AIzaSyBkfyhnZYGtiduQD2WOLe6J3inurWkdoMs',
+  authDomain: 'sdbx-marcin-gol-300219.firebaseapp.com',
+  databaseURL: 'https://sdbx-marcin-gol-300219.firebaseio.com',
+  projectId: 'sdbx-marcin-gol-300219',
+  storageBucket: 'sdbx-marcin-gol-300219.appspot.com',
+  messagingSenderId: '768476052281',
+  appId: '1:768476052281:web:c9a8d9afe2ff8cf28b06e8',
+  measurementId: 'G-BJRV6ERY2C'
 };
