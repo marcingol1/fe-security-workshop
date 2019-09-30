@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import styled from 'styled-components';
-import 'firebase/firestore';
 import config from '../config';
 
 const RegisterWrapper = styled.main`
